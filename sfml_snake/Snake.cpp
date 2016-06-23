@@ -8,19 +8,28 @@
 
 #include "Snake.hpp"
 
+#define DEBUG
+
 
 Snake::Snake(float sizeFactor, int width, int height) {
-    setPosition(400 * sizeFactor, 225 * sizeFactor);
+    
+    setPosition(width / 2, height / 2);
     setSize(sf::Vector2f(DEFAULT_SNAKE_SIZE * sizeFactor, DEFAULT_SNAKE_SIZE * sizeFactor));
     setFillColor(sf::Color::Red);
     
     _sizeFactor = sizeFactor;
     
     _windowWidth = width;
-    _windowHeigth = height;
+    _windowHeight = height;
+    
+    _snakeSize = int(DEFAULT_SNAKE_SIZE * sizeFactor);
+    
 }
 
 void Snake::handleEvent(sf::Event & event) {
+    
+#ifndef DEBUG
+    
     switch (event.key.code) {
         
         case sf::Keyboard::W:
@@ -39,13 +48,45 @@ void Snake::handleEvent(sf::Event & event) {
             if (_dir != up) _dir = down;
             break;
             
+        default:
+            break;
+            
+    }
+    
+#else
+    
+    static Direction oldDir;
+    
+    switch (event.key.code) {
+            
+        case sf::Keyboard::W:
+            _dir = up;
+            break;
+            
+        case sf::Keyboard::A:
+            _dir = left;
+            break;
+            
+        case sf::Keyboard::D:
+            _dir = right;
+            break;
+            
+        case sf::Keyboard::S:
+            _dir = down;
+            break;
+            
         case sf::Keyboard::Space:
-            _dir = none;
+            if (_dir != none) { oldDir = _dir; _dir = none; }
+            else _dir = oldDir;
             break;
             
         default:
             break;
+            
     }
+    
+#endif
+    
 }
 
 
@@ -59,26 +100,34 @@ bool Snake::move() {
     switch (_dir) {
             
         case up:
-            posY -= DEFAULT_SNAKE_SIZE * _sizeFactor;
+            posY -= _snakeSize;
             break;
             
         case down:
-            posY += DEFAULT_SNAKE_SIZE * _sizeFactor;
+            posY += _snakeSize;
             break;
             
         case left:
-            posX -= DEFAULT_SNAKE_SIZE * _sizeFactor;
+            posX -= _snakeSize;
             break;
             
         case right:
-            posX += DEFAULT_SNAKE_SIZE * _sizeFactor;
+            posX += _snakeSize;
             break;
             
         default:
             break;
     }
     
+    if (posX < 0) posX = _windowWidth - _snakeSize;
+    else if (posX > _windowWidth) posX = 0;
+    
+    if (posY < 0) posY = _windowHeight - _snakeSize;
+    else if (posY >=_windowHeight) posY = 0;
+    
     setPosition(posX, posY);
+    
+    return true;
     
 }
 

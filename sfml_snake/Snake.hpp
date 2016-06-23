@@ -13,26 +13,30 @@
 
 #include <SFML/Graphics.hpp>
 
-#define DEFAULT_SNAKE_SIZE 30
+#define DEFAULT_SNAKE_SIZE 25
 
 
 enum Direction {
+    
     none,
     up,
     down,
     left,
     right
+    
 };
 
 
 class Snake : public sf::RectangleShape {
     
 private:
+    
     float _sizeFactor;
-    int _windowHeigth, _windowWidth;
+    int _windowHeight, _windowWidth, _snakeSize;
     Direction _dir;
     
 public:
+    
     Snake(float, int, int);
     
     void handleEvent(sf::Event&);

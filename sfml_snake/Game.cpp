@@ -15,18 +15,30 @@
 
 /* Methods of class Food */
 
-Food::Food(float sizeFactor) {
+Food::Food(float sizeFactor, int height, int width) {
+    
     setFillColor(sf::Color::Magenta);
-    setSize(sf::Vector2f(20 * sizeFactor, 20 * sizeFactor));
+    setSize(sf::Vector2f(DEFAULT_FOOD_SIZE * sizeFactor, DEFAULT_FOOD_SIZE * sizeFactor));
+    
+    _windowWidth = width;
+    _windowHeight = height;
+    
+    _foodSize = int(DEFAULT_FOOD_SIZE * sizeFactor);
+    
     newFood();
+    
 }
 
 void Food::newFood() {
-    setPosition(rand() % 800 * _sizeFactor, rand() % 450 * _sizeFactor);
+    
+    setPosition(rand() % (_windowWidth - _foodSize), rand() % (_windowHeight - _foodSize));
+    
 }
 
 sf::Vector2f Food::position() {
+    
     return getPosition();
+    
 }
 
 /* Methods of class Game */
@@ -49,6 +61,9 @@ Game::Game() {
 void Game::gameLoop() {
     
     Snake snake(_sizeFactor, _width, _height);
+    Food food(_sizeFactor, _width, _height);
+    
+    bool snakeIsAlive = true;
     
     sf::Event event;
     
@@ -57,7 +72,7 @@ void Game::gameLoop() {
     background.setFillColor(sf::Color::Green);
     background.setPosition(0, 0);
     
-    while (_window.isOpen()) {
+    while (_window.isOpen() and snakeIsAlive) {
         
         /* Handle events */
         
@@ -67,7 +82,7 @@ void Game::gameLoop() {
                 _window.close();
             }
             
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+            if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape) {
                 _window.close();
             } else if (event.type == sf::Event::KeyPressed) {
                 snake.handleEvent(event);
@@ -77,7 +92,7 @@ void Game::gameLoop() {
         
         /* Perform calculations */
         
-        snake.move();
+        snakeIsAlive = snake.move();
         
         
         /* Draw on screen */
@@ -86,8 +101,10 @@ void Game::gameLoop() {
         
         _window.draw(background);
         _window.draw(snake);
+        _window.draw(food);
         
         _window.display();
         
     }
+    
 }

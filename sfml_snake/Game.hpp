@@ -13,14 +13,19 @@
 
 #include "Snake.hpp"
 
+#define DEFAULT_FOOD_SIZE 20
 
-class Food : sf::RectangleShape {
+
+class Food : public sf::RectangleShape {
     
 private:
+    
     float _sizeFactor;
+    int _windowWidth, _windowHeight, _foodSize;
     
 public:
-    Food(float);
+    
+    Food(float, int, int);
     void newFood();
     sf::Vector2f position();
     
@@ -31,11 +36,13 @@ public:
 class Game {
     
 private:
+    
     float _sizeFactor;
     int _height, _width;
     sf::RenderWindow _window;
     
 public:
+    
     Game();
     void gameLoop();
     
