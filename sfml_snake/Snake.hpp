@@ -14,13 +14,25 @@
 #include <SFML/Graphics.hpp>
 
 
-class Snake : sf::RectangleShape {
+enum Direction {
+    none,
+    down    = 0,
+    left    = 1,
+    up      = 2,
+    right   = 3
+};
+
+
+class Snake : public sf::RectangleShape {
     
 private:
     float _sizeFactor;
+    Direction _dir;
     
 public:
     Snake(float);
+    
+    void handleEvent(sf::Event&);
     
 };
 

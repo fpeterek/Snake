@@ -22,7 +22,7 @@ private:
 public:
     Food(float);
     void newFood();
-    sf::Transformable position();
+    sf::Vector2f position();
     
     
 };
@@ -32,6 +32,7 @@ class Game {
     
 private:
     float _sizeFactor;
+    int _height, _width;
     sf::RenderWindow _window;
     
 public:
