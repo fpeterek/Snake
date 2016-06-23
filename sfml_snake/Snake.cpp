@@ -6,6 +6,8 @@
 //  Copyright © 2016 Filip Peterek. All rights reserved.
 //
 
+#include <cmath>
+
 #include "Snake.hpp"
 
 #define DEBUG
@@ -131,7 +133,15 @@ bool Snake::move() {
     
 }
 
-
+bool Snake::collisionWithFood(sf::Vector2f foodPosition, int foodSize) {
+    
+    if (fabs(getPosition().x - foodPosition.x) <= foodSize and
+        fabs(getPosition().y - foodPosition.y) <= foodSize) return true;
+    
+    
+    return false;
+    
+}
 
 
 

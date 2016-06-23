@@ -13,9 +13,10 @@
 
 #include "Snake.hpp"
 
+
 /* Methods of class Food */
 
-Food::Food(float sizeFactor, int height, int width) {
+Food::Food(float sizeFactor, int width, int height) {
     
     setFillColor(sf::Color::Magenta);
     setSize(sf::Vector2f(DEFAULT_FOOD_SIZE * sizeFactor, DEFAULT_FOOD_SIZE * sizeFactor));
@@ -31,7 +32,7 @@ Food::Food(float sizeFactor, int height, int width) {
 
 void Food::newFood() {
     
-    setPosition(rand() % (_windowWidth - _foodSize), rand() % (_windowHeight - _foodSize));
+    setPosition(rand() % (_windowWidth - (2 * _foodSize)) + _foodSize, rand() % (_windowHeight - (2 * _foodSize)) + _foodSize);
     
 }
 
@@ -44,6 +45,8 @@ sf::Vector2f Food::position() {
 /* Methods of class Game */
 
 Game::Game() {
+    
+    srand(unsigned(time(nullptr)));
     
     const sf::VideoMode vm = sf::VideoMode::getFullscreenModes().at(0);
     
@@ -64,6 +67,7 @@ void Game::gameLoop() {
     Food food(_sizeFactor, _width, _height);
     
     bool snakeIsAlive = true;
+    int foodSize = DEFAULT_FOOD_SIZE * _sizeFactor;
     
     sf::Event event;
     
@@ -84,7 +88,8 @@ void Game::gameLoop() {
             
             if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape) {
                 _window.close();
-            } else if (event.type == sf::Event::KeyPressed) {
+            }
+            else if (event.type == sf::Event::KeyPressed) {
                 snake.handleEvent(event);
             }
             
@@ -94,6 +99,7 @@ void Game::gameLoop() {
         
         snakeIsAlive = snake.move();
         
+        if (snake.collisionWithFood(food.position(), foodSize)) food.newFood();
         
         /* Draw on screen */
         

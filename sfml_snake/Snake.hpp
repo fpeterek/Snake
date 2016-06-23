@@ -13,6 +13,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Game.hpp"
+
 #define DEFAULT_SNAKE_SIZE 25
 
 
@@ -41,6 +43,7 @@ public:
     
     void handleEvent(sf::Event&);
     bool move();
+    bool collisionWithFood(sf::Vector2f, int);
     
 };
 
