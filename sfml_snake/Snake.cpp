@@ -9,11 +9,15 @@
 #include "Snake.hpp"
 
 
-Snake::Snake(float sizeFactor) {
+Snake::Snake(float sizeFactor, int width, int height) {
     setPosition(400 * sizeFactor, 225 * sizeFactor);
-    setSize(sf::Vector2f(30 * sizeFactor, 30 * sizeFactor));
+    setSize(sf::Vector2f(DEFAULT_SNAKE_SIZE * sizeFactor, DEFAULT_SNAKE_SIZE * sizeFactor));
     setFillColor(sf::Color::Red);
+    
     _sizeFactor = sizeFactor;
+    
+    _windowWidth = width;
+    _windowHeigth = height;
 }
 
 void Snake::handleEvent(sf::Event & event) {
@@ -43,3 +47,55 @@ void Snake::handleEvent(sf::Event & event) {
             break;
     }
 }
+
+
+bool Snake::move() {
+    
+    if (_dir == none) return true;
+    
+    float posX = getPosition().x;
+    float posY = getPosition().y;
+    
+    switch (_dir) {
+            
+        case up:
+            posY -= DEFAULT_SNAKE_SIZE * _sizeFactor;
+            break;
+            
+        case down:
+            posY += DEFAULT_SNAKE_SIZE * _sizeFactor;
+            break;
+            
+        case left:
+            posX -= DEFAULT_SNAKE_SIZE * _sizeFactor;
+            break;
+            
+        case right:
+            posX += DEFAULT_SNAKE_SIZE * _sizeFactor;
+            break;
+            
+        default:
+            break;
+    }
+    
+    setPosition(posX, posY);
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

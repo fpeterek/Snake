@@ -18,7 +18,7 @@
 Food::Food(float sizeFactor) {
     setFillColor(sf::Color::Magenta);
     setSize(sf::Vector2f(20 * sizeFactor, 20 * sizeFactor));
-    setPosition(rand() % 800 * _sizeFactor, rand() % 450 * _sizeFactor);
+    newFood();
 }
 
 void Food::newFood() {
@@ -33,7 +33,7 @@ sf::Vector2f Food::position() {
 
 Game::Game() {
     
-    sf::VideoMode vm = sf::VideoMode::getFullscreenModes().at(0);
+    const sf::VideoMode vm = sf::VideoMode::getFullscreenModes().at(0);
     
     _window.create(vm, "Snake", sf::Style::Fullscreen);
     _window.setMouseCursorVisible(false);
@@ -42,18 +42,18 @@ Game::Game() {
     
     _sizeFactor = (float)vm.width / 800.0f;
     
-    _height = vm.height;
     _width = vm.width;
+    _height = vm.height;
 }
 
 void Game::gameLoop() {
     
-    Snake snake(_sizeFactor);
+    Snake snake(_sizeFactor, _width, _height);
     
     sf::Event event;
     
     sf::RectangleShape background;
-    background.setSize(sf::Vector2f(800 * _sizeFactor, 450 * _sizeFactor));
+    background.setSize(sf::Vector2f(_width, _height));
     background.setFillColor(sf::Color::Green);
     background.setPosition(0, 0);
     
@@ -76,6 +76,8 @@ void Game::gameLoop() {
         }
         
         /* Perform calculations */
+        
+        snake.move();
         
         
         /* Draw on screen */
