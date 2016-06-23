@@ -6,6 +6,9 @@
 //  Copyright © 2016 Filip Peterek. All rights reserved.
 //
 
+#include <ctime>
+#include <cstdlib>
+
 #include "Game.hpp"
 
 

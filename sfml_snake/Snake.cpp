@@ -10,7 +10,7 @@
 
 
 Snake::Snake(float sizeFactor) {
-    setPosition(400 * sizeFactor, 250 * sizeFactor);
+    setPosition(400 * sizeFactor, 225 * sizeFactor);
     setSize(sf::Vector2f(30 * sizeFactor, 30 * sizeFactor));
     setFillColor(sf::Color::Red);
     _sizeFactor = sizeFactor;

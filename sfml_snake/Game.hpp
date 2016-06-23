@@ -20,6 +20,7 @@ private:
     float _sizeFactor;
     
 public:
+    Food(float);
     void newFood();
     sf::Transformable position();
     
@@ -35,7 +36,7 @@ private:
     
 public:
     Game();
-    void GameLoop();
+    void gameLoop();
     
 };
 
