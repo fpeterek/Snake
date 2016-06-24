@@ -29,6 +29,17 @@ enum Direction {
 };
 
 
+class SnakePart : public sf::RectangleShape {
+    
+private:
+    float _sizeFactor;
+    
+public:
+    SnakePart(sf::Vector2f, float);
+    
+};
+
+
 class Snake : public sf::RectangleShape {
     
 private:
@@ -36,6 +47,9 @@ private:
     float _sizeFactor;
     int _windowHeight, _windowWidth, _snakeSize;
     Direction _dir;
+    std::vector<SnakePart> _parts;
+    
+    void grow();
     
 public:
     
@@ -44,7 +58,31 @@ public:
     void handleEvent(sf::Event&);
     bool move();
     bool collisionWithFood(sf::Vector2f, int);
+    std::vector<SnakePart> & getParts();
     
 };
 
+
 #endif /* Snake_hpp */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -76,7 +76,7 @@ void Game::gameLoop() {
     background.setFillColor(sf::Color::Green);
     background.setPosition(0, 0);
     
-    while (_window.isOpen() and snakeIsAlive) {
+    while (_window.isOpen()) {
         
         /* Handle events */
         
@@ -97,9 +97,13 @@ void Game::gameLoop() {
         
         /* Perform calculations */
         
-        snakeIsAlive = snake.move();
+        if (snakeIsAlive) {
         
-        if (snake.collisionWithFood(food.position(), foodSize)) food.newFood();
+            snakeIsAlive = snake.move();
+        
+            if ( snake.collisionWithFood(food.position(), foodSize) ) food.newFood();
+            
+        }
         
         /* Draw on screen */
         
@@ -107,6 +111,9 @@ void Game::gameLoop() {
         
         _window.draw(background);
         _window.draw(snake);
+        for (SnakePart & part : snake.getParts()) {
+            _window.draw(part);
+        }
         _window.draw(food);
         
         _window.display();

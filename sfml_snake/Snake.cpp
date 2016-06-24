@@ -13,6 +13,19 @@
 #define DEBUG
 
 
+/* SnakePart */
+
+SnakePart::SnakePart(sf::Vector2f pos, float sizeFactor) {
+    setPosition(pos);
+    setFillColor(sf::Color::Red);
+    setSize(sf::Vector2f(DEFAULT_SNAKE_SIZE * sizeFactor, DEFAULT_SNAKE_SIZE * sizeFactor));
+    
+    _sizeFactor = sizeFactor;
+}
+
+
+/* Snake */
+
 Snake::Snake(float sizeFactor, int width, int height) {
     
     setPosition(width / 2, height / 2);
@@ -30,64 +43,28 @@ Snake::Snake(float sizeFactor, int width, int height) {
 
 void Snake::handleEvent(sf::Event & event) {
     
-#ifndef DEBUG
-    
     switch (event.key.code) {
         
         case sf::Keyboard::W:
-            if (_dir != down) _dir = up;
+            if (_dir != down or not _parts.size()) _dir = up;
             break;
         
         case sf::Keyboard::A:
-            if (_dir != right) _dir = left;
+            if (_dir != right or not _parts.size()) _dir = left;
             break;
             
         case sf::Keyboard::D:
-            if (_dir != left) _dir = right;
+            if (_dir != left or not _parts.size()) _dir = right;
             break;
             
         case sf::Keyboard::S:
-            if (_dir != up) _dir = down;
+            if (_dir != up or not _parts.size()) _dir = down;
             break;
             
         default:
             break;
             
     }
-    
-#else
-    
-    static Direction oldDir;
-    
-    switch (event.key.code) {
-            
-        case sf::Keyboard::W:
-            _dir = up;
-            break;
-            
-        case sf::Keyboard::A:
-            _dir = left;
-            break;
-            
-        case sf::Keyboard::D:
-            _dir = right;
-            break;
-            
-        case sf::Keyboard::S:
-            _dir = down;
-            break;
-            
-        case sf::Keyboard::Space:
-            if (_dir != none) { oldDir = _dir; _dir = none; }
-            else _dir = oldDir;
-            break;
-            
-        default:
-            break;
-            
-    }
-    
-#endif
     
 }
 
@@ -95,6 +72,18 @@ void Snake::handleEvent(sf::Event & event) {
 bool Snake::move() {
     
     if (_dir == none) return true;
+    
+    if (_parts.size()) {
+        
+        for (int i = _parts.size() - 1; i > 0; --i) {
+            
+            _parts.at(i).setPosition( _parts.at(i - 1).getPosition() );
+            
+        }
+        
+        _parts.at(0).setPosition(getPosition());
+        
+    }
     
     float posX = getPosition().x;
     float posY = getPosition().y;
@@ -119,6 +108,7 @@ bool Snake::move() {
             
         default:
             break;
+            
     }
     
     if (posX < 0) posX = _windowWidth - _snakeSize;
@@ -129,24 +119,46 @@ bool Snake::move() {
     
     setPosition(posX, posY);
     
+    for (SnakePart part : _parts) {
+        
+        if (getPosition() == part.getPosition()) return false;
+        
+    }
+    
+    
     return true;
     
 }
 
 bool Snake::collisionWithFood(sf::Vector2f foodPosition, int foodSize) {
     
-    if (fabs(getPosition().x - foodPosition.x) <= foodSize and
-        fabs(getPosition().y - foodPosition.y) <= foodSize) return true;
-    
+    if (fabs(getPosition().x - foodPosition.x) <= foodSize and fabs(getPosition().y - foodPosition.y) <= foodSize) {
+        
+        grow();
+        return true;
+        
+    }
     
     return false;
     
 }
 
+void Snake::grow() {
+    
+    if (not _parts.size()) {
+        _parts.emplace_back(getPosition(), _sizeFactor);
+    }
+    else {
+        _parts.emplace_back(_parts.back().getPosition(), _sizeFactor);
+    }
+    
+}
 
-
-
-
+std::vector<SnakePart> & Snake::getParts() {
+    
+    return _parts;
+    
+}
 
 
 
