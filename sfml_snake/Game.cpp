@@ -16,6 +16,8 @@
 
 /* Methods of class Food */
 
+/* Constructor */
+
 Food::Food(float sizeFactor, int width, int height) {
     
     setFillColor(sf::Color::Magenta);
@@ -30,30 +32,35 @@ Food::Food(float sizeFactor, int width, int height) {
     
 }
 
+/* Generate new location */
+
 void Food::newFood() {
     
     setPosition(rand() % (_windowWidth - (2 * _foodSize)) + _foodSize, rand() % (_windowHeight - (2 * _foodSize)) + _foodSize);
     
 }
 
-sf::Vector2f Food::position() {
-    
-    return getPosition();
-    
-}
-
 /* Methods of class Game */
+
+/* Constructor */
 
 Game::Game() {
     
     srand(unsigned(time(nullptr)));
     
+    /* Temporary constant to store info about the currently selected VideoMode */
+    /* Automatically chooses the best VideoMode available */
+    
     const sf::VideoMode vm = sf::VideoMode::getFullscreenModes().at(0);
+    
+    /* Initialize window */
     
     _window.create(vm, "Snake", sf::Style::Fullscreen);
     _window.setMouseCursorVisible(false);
     _window.setVerticalSyncEnabled(true);
     _window.setFramerateLimit(10);
+    
+    /* Size factor is used to calculate the size of objects so that the object to screen ratio is the same on all monitors */
     
     _sizeFactor = (float)vm.width / 800.0f;
     
@@ -62,6 +69,8 @@ Game::Game() {
 }
 
 void Game::gameLoop() {
+    
+    /* Initialize variables */
     
     Snake snake(_sizeFactor, _width, _height);
     Food food(_sizeFactor, _width, _height);
@@ -101,7 +110,7 @@ void Game::gameLoop() {
         
             snakeIsAlive = snake.move();
         
-            if ( snake.collisionWithFood(food.position(), foodSize) ) food.newFood();
+            if ( snake.collisionWithFood(food.getPosition(), foodSize) ) food.newFood();
             
         }
         

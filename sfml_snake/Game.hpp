@@ -16,6 +16,9 @@
 #define DEFAULT_FOOD_SIZE 20
 
 
+/* Food */
+
+
 class Food : public sf::RectangleShape {
     
 private:
@@ -27,10 +30,11 @@ public:
     
     Food(float, int, int);
     void newFood();
-    sf::Vector2f position();
-    
     
 };
+
+
+/* Game */
 
 
 class Game {

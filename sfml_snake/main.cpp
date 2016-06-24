@@ -8,14 +8,34 @@
 
 #include <ctime>
 #include <cstdlib>
+#include <iostream>
 
 #include "Game.hpp"
 
 
 int main(int argc, const char* argv[]){
     
-    Game game;
-    game.gameLoop();
+    try {
+        Game game;
+        game.gameLoop();
+    }
+    catch(...) {
+        std::cout << "Fuck. " << std::endl;
+    }
+    
     return 0;
     
 }
+
+/* 
+ 
+ sf::Vector2f SnakePart::position() {
+ 
+    return this -> getPosition();
+ 
+ }
+ 
+ 
+ 
+ 
+ */

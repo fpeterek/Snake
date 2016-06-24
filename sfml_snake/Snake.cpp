@@ -15,6 +15,8 @@
 
 /* SnakePart */
 
+/* Constructor */
+
 SnakePart::SnakePart(sf::Vector2f pos, float sizeFactor) {
     setPosition(pos);
     setFillColor(sf::Color::Red);
@@ -25,6 +27,8 @@ SnakePart::SnakePart(sf::Vector2f pos, float sizeFactor) {
 
 
 /* Snake */
+
+/* Constructor */
 
 Snake::Snake(float sizeFactor, int width, int height) {
     
@@ -40,6 +44,8 @@ Snake::Snake(float sizeFactor, int width, int height) {
     _snakeSize = int(DEFAULT_SNAKE_SIZE * sizeFactor);
     
 }
+
+/* Handles user input */
 
 void Snake::handleEvent(sf::Event & event) {
     
@@ -71,7 +77,11 @@ void Snake::handleEvent(sf::Event & event) {
 
 bool Snake::move() {
     
+    /* Doesn't move if _dir is none */
+    
     if (_dir == none) return true;
+    
+    /* Each SnakePart moves to the position of the SnakePart in front of it */
     
     if (_parts.size()) {
         
@@ -111,6 +121,8 @@ bool Snake::move() {
             
     }
     
+    /* If snake moves out of screen bounds it will appear on the other side of the screen */
+    
     if (posX < 0) posX = _windowWidth - _snakeSize;
     else if (posX > _windowWidth) posX = 0;
     
@@ -119,16 +131,21 @@ bool Snake::move() {
     
     setPosition(posX, posY);
     
+    /* Checks for collision */
+    
     for (SnakePart part : _parts) {
         
         if (getPosition() == part.getPosition()) return false;
         
     }
     
+    /* Return true if snake doesn't collide with anything */
     
     return true;
     
 }
+
+/* Checks for collision with food */
 
 bool Snake::collisionWithFood(sf::Vector2f foodPosition, int foodSize) {
     
@@ -143,6 +160,8 @@ bool Snake::collisionWithFood(sf::Vector2f foodPosition, int foodSize) {
     
 }
 
+/* Adds one SnakePart after snake consumes food */
+
 void Snake::grow() {
     
     if (not _parts.size()) {
@@ -153,6 +172,8 @@ void Snake::grow() {
     }
     
 }
+
+/* Returns an std::vector of SnakeParts so they can be drawn to the screen */
 
 std::vector<SnakePart> & Snake::getParts() {
     

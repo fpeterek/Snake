@@ -18,6 +18,9 @@
 #define DEFAULT_SNAKE_SIZE 25
 
 
+/* Direction */
+
+
 enum Direction {
     
     none,
@@ -29,6 +32,10 @@ enum Direction {
 };
 
 
+/* SnakePart */
+/* Snake's length increases by 1 SnakePart each time snake consumes food */
+
+
 class SnakePart : public sf::RectangleShape {
     
 private:
@@ -38,6 +45,9 @@ public:
     SnakePart(sf::Vector2f, float);
     
 };
+
+
+/* Snake */
 
 
 class Snake : public sf::RectangleShape {
