@@ -26,16 +26,3 @@ int main(int argc, const char* argv[]){
     return 0;
     
 }
-
-/* 
- 
- sf::Vector2f SnakePart::position() {
- 
-    return this -> getPosition();
- 
- }
- 
- 
- 
- 
- */
