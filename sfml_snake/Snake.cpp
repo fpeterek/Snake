@@ -10,8 +10,6 @@
 
 #include "Snake.hpp"
 
-#define DEBUG
-
 
 /* SnakePart */
 
